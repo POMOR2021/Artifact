@@ -152,9 +152,9 @@
 /workspace/obj/Debug/net8.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /workspace/obj/Debug/net8.0/scopedcss/bundle/WebApplication22.styles.css
 /workspace/obj/Debug/net8.0/scopedcss/projectbundle/WebApplication22.bundle.scp.css
-/workspace/obj/Debug/net8.0/WebApplication22.csproj.CopyComplete
 /workspace/obj/Debug/net8.0/WebApplication22.dll
 /workspace/obj/Debug/net8.0/refint/WebApplication22.dll
 /workspace/obj/Debug/net8.0/WebApplication22.pdb
 /workspace/obj/Debug/net8.0/WebApplication22.genruntimeconfig.cache
 /workspace/obj/Debug/net8.0/ref/WebApplication22.dll
+/workspace/obj/Debug/net8.0/WebAppli.9A19B7AF.Up2Date
