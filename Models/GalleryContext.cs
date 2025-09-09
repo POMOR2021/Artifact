@@ -7,9 +7,8 @@ public class GalleryContext : DbContext
     public DbSet<Artifact> Artifacts { get; set; }
     public DbSet<Comment> Comments { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public GalleryContext(DbContextOptions<GalleryContext> options) : base(options)
     {
-        optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=GalleryDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
     }
 
     public void Seed()
