@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Добавить артефакт";
+}
+<h2>Добавить артефакт</h2>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>Название</label>
+        <input type="text" name="title" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Описание</label>
+        <textarea name="description" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label>История</label>
+        <textarea name="history" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label>Статус</label>
+        <select name="status" class="form-select" required>
+            <option value="в экспозиции">В экспозиции</option>
+            <option value="на реставрации">На реставрации</option>
+            <option value="в хранилище">В хранилище</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Добавить</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Отмена</a>
+</form>

@@ -1,0 +1,48 @@
+@model IEnumerable<Artifact>
+@{
+    ViewData["Title"] = "Артефакты";
+}
+<h2>Артефакты</h2>
+<form id="filter-form" class="mb-3">
+    <select id="status-select" name="status" class="form-select">
+        <option value="">Все статусы</option>
+        <option value="в экспозиции">В экспозиции</option>
+        <option value="на реставрации">На реставрации</option>
+        <option value="в хранилище">В хранилище</option>
+    </select>
+</form>
+<div class="row" id="artifacts-list">
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create" class="btn btn-success mb-2">Добавить артефакт</a>
+}
+@section Scripts {
+<script>
+function loadArtifacts(status) {
+    fetch('/api/ArtifactApi' + (status ? ('?status=' + encodeURIComponent(status)) : ''))
+        .then(r => r.json())
+        .then(data => {
+            let html = '';
+            if (data.length === 0) {
+                html = "<div class='col-12'><div class='alert alert-info'>Нет артефактов для выбранного фильтра.</div></div>";
+            } else {
+                data.forEach(artifact => {
+                    html += `<div class='col-md-4 mb-3'><div class='card h-100'><div class='card-body'>` +
+                        `<h5 class='card-title'>${artifact.title}</h5>` +
+                        `<p class='card-text'>${artifact.description}</p>` +
+                        `<a href='/Artifact/Details/${artifact.id}' class='btn btn-primary'>Подробнее</a>` +
+                        `</div></div></div>`;
+                });
+            }
+            document.getElementById('artifacts-list').innerHTML = html;
+        });
+}
+document.getElementById('status-select').addEventListener('change', function() {
+    loadArtifacts(this.value);
+});
+window.addEventListener('DOMContentLoaded', function() {
+    loadArtifacts('');
+});
+</script>
+}

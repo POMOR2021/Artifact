@@ -1,0 +1,75 @@
+@model Artifact
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="card">
+    <div class="card-body">
+        <h3>@Model.Title</h3>
+        <p>@Model.Description</p>
+        <p><strong>История:</strong> @Model.History</p>
+        <p><strong>Статус:</strong> @Model.Status</p>
+    </div>
+</div>
+<h4 class="mt-4">Комментарии</h4>
+<div id="comments-section">
+</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <form id="comment-form" class="mb-3">
+        <input type="hidden" id="artifactId" value="@Model.Id" />
+        <input type="hidden" id="currentUser" value="@User.Identity.Name" />
+        <div class="form-group">
+            <label>Комментарий</label>
+            <textarea id="commentText" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Добавить</button>
+    </form>
+}
+<a asp-action="Index" class="btn btn-secondary mt-3">Назад к списку</a>
+@section Scripts {
+<script>
+function loadComments() {
+    fetch('/api/CommentApi/artifact/@Model.Id')
+        .then(r => r.json())
+        .then(data => {
+            let html = '';
+            data.forEach(comment => {
+                html += `<div class='border rounded p-2 mb-2'><strong>${comment.author}</strong> <span class='text-muted'>${comment.date.substring(0,10)}</span><div>${comment.text}</div></div>`;
+            });
+            document.getElementById('comments-section').innerHTML = html;
+        });
+}
+loadComments();
+const form = document.getElementById('comment-form');
+if (form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        fetch('/api/CommentApi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                artifactId: document.getElementById('artifactId').value,
+                author: document.getElementById('currentUser').value,
+                text: document.getElementById('commentText').value
+            })
+        })
+        .then(async r => {
+            if (!r.ok) {
+                const err = await r.text();
+                alert('Ошибка: ' + err);
+                return [];
+            }
+            return r.json();
+        })
+        .then(data => {
+            document.getElementById('commentText').value = '';
+            let html = '';
+            data.forEach(comment => {
+                html += `<div class='border rounded p-2 mb-2'><strong>${comment.author}</strong> <span class='text-muted'>${comment.date.substring(0,10)}</span><div>${comment.text}</div></div>`;
+            });
+            document.getElementById('comments-section').innerHTML = html;
+        });
+    });
+}
+</script>
+}
